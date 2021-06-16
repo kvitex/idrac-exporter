@@ -11,6 +11,7 @@ load_dotenv()
 user             = os.environ['IDRAC_USER']
 password         = os.environ['IDRAC_PASSWORD']
 ssl_verify       = os.environ.get('SSL_VERIFY','True').lower() == 'true'
+no_NaN_values    = os.environ.get('NO_NAN_VALUES','True').lower() == 'true'
 metrics_name_prefix = os.environ.get('METRICS_NAME_PREFIX', '')
 
 status_value = lambda x: 'NaN' if x is None else int(x.lower() == 'ok')
@@ -103,6 +104,7 @@ def main():
     for metric in metrics:
         metric_name = metric['name']
         metric_value = metric['value']
-        labels_string = ','.join(list(map(lambda st: f'{st[0]}="{st[1]}"', metric['labels'])))
-        output_list.append(f'{metrics_name_prefix}{metric_name} {{{labels_string}}} {metric_value}')
+        if (metric_value != 'NaN') or (not no_NaN_values):
+            labels_string = ','.join(list(map(lambda st: f'{st[0]}="{st[1]}"', metric['labels'])))
+            output_list.append(f'{metrics_name_prefix}{metric_name} {{{labels_string}}} {metric_value}')
     return Response('\n'.join(output_list), mimetype='text/plain')

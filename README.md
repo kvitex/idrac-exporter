@@ -31,7 +31,7 @@ Static configuration:
 
 ```
 scrape_configs:
-  - job_name: route_stat
+  - job_name: idrac_exporter
     scrape_interval: 5m
     scrape_timeout: 3m
     metrics_path: /metrics
@@ -52,7 +52,7 @@ Or you can use file service discovery:
 
 ```
 scrape_configs:
-  - job_name: route_stat
+  - job_name: idrac_exporter
     scrape_interval: 5m
     scrape_timeout: 3m
     metrics_path: /metrics
